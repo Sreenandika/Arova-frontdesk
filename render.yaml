@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: arvo-frontdesk
+    runtime: node
+    plan: free
+    buildCommand: npm run install:all && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: BUSINESS_TZ
+        value: Asia/Kolkata
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: frontdesk-db
+          property: connectionString
+
+databases:
+  - name: frontdesk-db
+    plan: free
+    postgresMajorVersion: 16
