@@ -22,7 +22,10 @@ export async function runMigrations(customPool?: pg.Pool) {
       );
     `);
 
-    const migrationsDir = path.resolve(__dirname, 'migrations');
+    let migrationsDir = path.resolve(__dirname, 'migrations');
+    if (!fs.existsSync(migrationsDir)) {
+      migrationsDir = path.resolve(__dirname, '../../src/db/migrations');
+    }
     if (!fs.existsSync(migrationsDir)) {
       console.log('No migrations directory found at', migrationsDir);
       await client.query('COMMIT');

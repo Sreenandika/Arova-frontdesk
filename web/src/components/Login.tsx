@@ -21,98 +21,108 @@ export function Login({ onLoginSuccess, onNavigate }: LoginProps) {
       const res = await api.login(email, password);
       onLoginSuccess(res.user);
     } catch (err: any) {
-      setError(err.message || 'Login failed');
+      setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQuickLogin = (demoEmail: string) => {
-    setEmail(demoEmail);
-    setPassword('password123');
-  };
-
   return (
-    <div className="portal-card" style={{ maxWidth: '420px', marginTop: '4rem' }}>
-      <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>Agent Sign In</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-          Arvo Systems Support Desk
-        </p>
-      </div>
-
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Email address</label>
-          <input
-            type="email"
-            required
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="agent@arvo.test"
-          />
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--bg)',
+        padding: '1rem',
+      }}
+    >
+      <div className="portal-card" style={{ maxWidth: '420px', width: '100%' }}>
+        {/* Logo / branding */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'var(--primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1rem',
+              fontSize: '1.5rem',
+            }}
+          >
+            🎯
+          </div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>
+            Sign in to Frontdesk
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+            Arvo Systems · Support Operations
+          </p>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Password</label>
-          <input
-            type="password"
-            required
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-          />
-        </div>
+        {error && (
+          <div className="alert alert-danger" style={{ marginBottom: '1rem' }}>
+            {error}
+          </div>
+        )}
 
-        <button type="submit" className="btn btn-primary" style={{ width: '100%', marginBottom: '1.5rem' }} disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign In'}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Email address</label>
+            <input
+              type="email"
+              required
+              autoFocus
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@arvo.com"
+              autoComplete="email"
+            />
+          </div>
 
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
-        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-          DEMO LOGINS (Password: password123)
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              required
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            style={{ width: '100%', marginTop: '0.5rem' }}
+            disabled={loading}
+          >
+            {loading ? 'Signing in…' : 'Sign In'}
+          </button>
+        </form>
+
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
           <button
             type="button"
-            className="btn btn-sm btn-secondary"
-            style={{ justifyContent: 'flex-start' }}
-            onClick={() => handleQuickLogin('agent1@arvo.test')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--primary)',
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+            }}
+            onClick={() => onNavigate('/portal/new')}
           >
-            👤 <strong>Aarav Sharma</strong> (Agent 1)
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            style={{ justifyContent: 'flex-start' }}
-            onClick={() => handleQuickLogin('agent2@arvo.test')}
-          >
-            👤 <strong>Diya Patel</strong> (Agent 2)
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            style={{ justifyContent: 'flex-start' }}
-            onClick={() => handleQuickLogin('manager@arvo.test')}
-          >
-            🛡️ <strong>Vikram Rao</strong> (Manager)
+            Submitting a support request? Use the Customer Portal →
           </button>
         </div>
-      </div>
-
-      <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-        <button
-          type="button"
-          style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.875rem' }}
-          onClick={() => onNavigate('/portal/new')}
-        >
-          Need to submit a customer ticket? Go to Customer Portal →
-        </button>
       </div>
     </div>
   );

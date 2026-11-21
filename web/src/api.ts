@@ -1,4 +1,4 @@
-import { User, TicketSummary, TicketDetailData, TicketPriority, TicketStatus } from './types';
+import { User, TicketSummary, TicketDetailData, TicketPriority, TicketStatus, StaffMember } from './types';
 
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('frontdesk_token');
@@ -134,6 +134,33 @@ export const api = {
   async portalReopen(token: string): Promise<any> {
     return request(`/api/portal/tickets/${token}/reopen`, {
       method: 'POST',
+    });
+  },
+
+  // Staff management (manager only)
+  async listStaff(): Promise<{ staff: StaffMember[] }> {
+    return request<{ staff: StaffMember[] }>('/api/staff');
+  },
+
+  async createStaff(data: {
+    name: string;
+    email: string;
+    role: 'agent' | 'manager';
+  }): Promise<{ member: StaffMember; tempPassword: string; notice: string }> {
+    return request('/api/staff', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async resetStaffPassword(id: string): Promise<{ tempPassword: string; notice: string }> {
+    return request(`/api/staff/${id}/reset-password`, { method: 'POST' });
+  },
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<{ success: boolean }> {
+    return request('/api/staff/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword }),
     });
   },
 };

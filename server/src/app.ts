@@ -8,6 +8,7 @@ import { authRouter } from './routes/auth.routes.js';
 import { ticketRouter } from './routes/ticket.routes.js';
 import { portalRouter } from './routes/portal.routes.js';
 import { holidayRouter } from './routes/holiday.routes.js';
+import { staffRouter } from './routes/staff.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +33,7 @@ export function createApp() {
   app.use('/api/tickets', ticketRouter);
   app.use('/api/portal', portalRouter);
   app.use('/api/holidays', holidayRouter);
+  app.use('/api/staff', staffRouter);
 
   // Static web frontend serving
   const webDistPath = path.resolve(__dirname, '../../web/dist');

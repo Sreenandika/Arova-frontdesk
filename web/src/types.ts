@@ -3,6 +3,16 @@ export interface User {
   name: string;
   email: string;
   role: 'agent' | 'manager';
+  mustChangePassword?: boolean;
+}
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  email: string;
+  role: 'agent' | 'manager';
+  must_change_password: boolean;
+  created_at: string;
 }
 
 export type TicketPriority = 'low' | 'medium' | 'critical';

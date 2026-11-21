@@ -29,8 +29,16 @@ export function Navbar({ user, onLogout, onNavigate, currentRoute }: NavbarProps
               className={`btn btn-sm ${currentRoute === '/' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => onNavigate('/')}
             >
-              Agent Workspace
+              Tickets
             </button>
+            {user.role === 'manager' && (
+              <button
+                className={`btn btn-sm ${currentRoute === '/team' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => onNavigate('/team')}
+              >
+                Team
+              </button>
+            )}
             <a
               href="/api/tickets/export.csv"
               className="btn btn-sm btn-secondary"

@@ -8,6 +8,7 @@ export interface AuthUser {
   name: string;
   email: string;
   role: 'agent' | 'manager';
+  mustChangePassword?: boolean;
 }
 
 export async function hashPassword(password: string): Promise<string> {
@@ -25,6 +26,7 @@ export function generateToken(user: AuthUser): string {
       email: user.email,
       name: user.name,
       role: user.role,
+      mustChangePassword: user.mustChangePassword ?? false,
     },
     config.jwtSecret,
     { expiresIn: '7d' }
@@ -37,7 +39,7 @@ export function verifyToken(token: string): AuthUser {
 
 export async function loginUser(email: string, password: string): Promise<{ user: AuthUser; token: string }> {
   const { rows } = await pool.query(
-    'SELECT id, name, email, password_hash, role FROM users WHERE email = $1',
+    'SELECT id, name, email, password_hash, role, must_change_password FROM users WHERE email = $1',
     [email.toLowerCase().trim()]
   );
 
@@ -56,6 +58,7 @@ export async function loginUser(email: string, password: string): Promise<{ user
     name: dbUser.name,
     email: dbUser.email,
     role: dbUser.role,
+    mustChangePassword: dbUser.must_change_password,
   };
 
   const token = generateToken(user);
