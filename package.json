@@ -1,0 +1,25 @@
+{
+  "name": "arvo-frontdesk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontdesk - SLA-backed support ticket system for Arvo Systems",
+  "scripts": {
+    "postinstall": "npm run install:all",
+    "install:all": "npm install --prefix server && npm install --prefix web",
+    "build": "npm run build --prefix web && npm run build --prefix server",
+    "start": "node server/dist/server.js",
+    "server:dev": "npm run dev --prefix server",
+    "web:dev": "npm run dev --prefix web",
+    "migrate": "npm run migrate --prefix server",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server"
+  },
+  "keywords": [
+    "helpdesk",
+    "sla",
+    "support",
+    "arvo"
+  ],
+  "author": "Arvo Systems",
+  "license": "UNLICENSED"
+}
